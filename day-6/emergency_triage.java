@@ -7,16 +7,18 @@ class Patient implements Comparable<Patient>{
     this.severity=severity;
   }
 
+  @Override
   public int compareTo(Patient obj){
     return this.severity - obj.severity;
   }
 
+  @Override
   public String toString(){
     return name+" "+severity;
   }
 }
 public class emergency_triage{
-  public static PriorityQueue<Patient> pq = new PriorityQueue<>(Collections.reverseOrder());
+  private static final PriorityQueue<Patient> pq = new PriorityQueue<>(Collections.reverseOrder());
 
   public static void enqueue(String name, int severity){
     pq.add(new Patient(name,severity));
@@ -43,18 +45,29 @@ public class emergency_triage{
     }
   }
   public static void main(String[] args){
-    Scanner sc = new Scanner(System.in);
-    int n = sc.nextInt();
-    for(int i=0;i<n;i++){
-      String command = sc.next().trim();
-      if(command.equals("ENQUEUE")){
-        String name = sc.next();
-        int severity = sc.nextInt();
-        enqueue(name,severity);
-      }else if(command.equals("DEQUEUE")){
-        dequeue();
-      }else if(command.equals("DISPLAY")){
-        display();
+    try (Scanner sc = new Scanner(System.in)) {
+      int n = sc.nextInt();
+      for(int i=0;i<n;i++){
+        String command = sc.next().trim();
+        switch (command) {
+          case "ENQUEUE": {
+            String name = sc.next();
+            int severity = sc.nextInt();
+            enqueue(name,severity);
+            break;
+          }
+          case "DEQUEUE": {
+            dequeue();
+            break;
+          }
+          case "DISPLAY": {
+            display();
+            break;
+          }
+          default:
+            // ignore unknown commands
+            break;
+        }
       }
     }
   }
